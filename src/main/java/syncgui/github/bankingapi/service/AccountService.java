@@ -7,12 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import syncgui.github.bankingapi.DTO.AccountDTO;
 import syncgui.github.bankingapi.exception.AccountNotFoundException;
+import syncgui.github.bankingapi.mapper.AccountMapper;
 import syncgui.github.bankingapi.model.AccountModel;
 import syncgui.github.bankingapi.repository.AccountRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static syncgui.github.bankingapi.mapper.AccountMapper.toDTO;
+import static syncgui.github.bankingapi.mapper.AccountMapper.toModel;
 
 @Service
 public class AccountService {
@@ -23,35 +29,44 @@ public class AccountService {
     @PersistenceContext
     EntityManager entityManager;
 
-    public AccountModel getAccountByUUID(UUID uuid) {
+    public AccountDTO getAccountByUUID(UUID uuid) {
         Optional<AccountModel> resultAccount = accountRepository.findById(uuid);
-        return resultAccount.orElseThrow(() -> new AccountNotFoundException(uuid));
+        return toDTO(resultAccount.orElseThrow(() -> new AccountNotFoundException(uuid)));
     }
 
-    public AccountModel saveAccount(AccountModel accountModel) {
-        return accountRepository.save(accountModel);
+    public AccountDTO saveAccount(AccountDTO accountDTO) {
+        return toDTO(accountRepository.save(toModel(accountDTO)));
     }
 
-    public void subtractBalance(AccountModel accountModel, Double amount) {
-        accountRepository.saveSubtractBalance(amount, accountModel.getAccountNumber());
-        accountModel.setBalance(accountModel.getBalance() - amount);
+    public void subtractBalance(UUID uuid, Double amount) {
+        accountExists(uuid);
+        accountRepository.saveSubtractBalance(amount, uuid);
     }
 
-    public void sumBalance(AccountModel accountModel, Double amount) {
-            accountRepository.saveSumBalance(amount, accountModel.getAccountNumber());
-            accountModel.setBalance(accountModel.getBalance() + amount);
+    public void sumBalance(UUID uuid, Double amount) {
+        accountExists(uuid);
+        accountRepository.saveSumBalance(amount, uuid);
+
     }
 
-    public Iterable<AccountModel> findAllAccounts() {
-        return accountRepository.findAll();
+    public List<AccountDTO> findAllAccounts() {
+        return accountRepository.findAll().stream().map(AccountMapper::toDTO).toList();
     }
 
     @Transactional
     public ResponseEntity<String> deleteAccountByUUID(UUID uuid) {
+        accountExists(uuid);
         Query query = entityManager.createNativeQuery("DELETE FROM ACCOUNT_MODEL WHERE ACCOUNT_NUMBER = :uuid");
         query.setParameter("uuid", uuid);
         int deletedRows = query.executeUpdate();
         System.out.println("Rows deleted: " + deletedRows);
-        return deletedRows == 1 ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().build();
+    }
+
+    public boolean accountExists(UUID uuid) {
+        if (!(accountRepository.checkIfAccountExists(uuid) > 0)) {
+            throw new AccountNotFoundException(uuid);
+        }
+        return true;
     }
 }

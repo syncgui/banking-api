@@ -2,11 +2,13 @@ package syncgui.github.bankingapi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
+@Builder
 public @Data class TransactionModel {
 
     @Id
@@ -14,7 +16,7 @@ public @Data class TransactionModel {
     private UUID transactionId;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    @Min(0)
+
     private Double amount;
 
     private UUID sourceAccount;

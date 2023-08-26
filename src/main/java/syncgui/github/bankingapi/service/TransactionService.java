@@ -2,6 +2,10 @@ package syncgui.github.bankingapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import syncgui.github.bankingapi.DTO.AccountDTO;
+import syncgui.github.bankingapi.DTO.TransactionDTO;
+import syncgui.github.bankingapi.mapper.AccountMapper;
+import syncgui.github.bankingapi.mapper.TransactionMapper;
 import syncgui.github.bankingapi.model.AccountModel;
 import syncgui.github.bankingapi.model.TransactionModel;
 import syncgui.github.bankingapi.model.TransactionType;
@@ -9,6 +13,7 @@ import syncgui.github.bankingapi.repository.AccountRepository;
 import syncgui.github.bankingapi.repository.TransactionRepository;
 
 import java.util.UUID;
+
 @Service
 public class TransactionService {
 
@@ -19,49 +24,49 @@ public class TransactionService {
     @Autowired
     AccountService accountService;
 
-    public AccountModel deposit(UUID uuid, TransactionModel transactionModel) {
-        AccountModel accountModel = accountService.getAccountByUUID(uuid);
+    public AccountDTO deposit(UUID uuid, TransactionDTO transactionDTO) {
+        TransactionModel transactionModel = TransactionMapper.toModel(transactionDTO);
 
-        accountService.sumBalance(accountModel, transactionModel.getAmount());
+        accountService.sumBalance(uuid, transactionDTO.getAmount());
 
         transactionModel.setDestinationAccount(uuid);
         transactionModel.setTransactionType(TransactionType.DEPOSIT);
 
-        accountRepository.save(accountModel);
         transactionRepository.save(transactionModel);
 
-        return accountModel;
+        AccountModel account = accountRepository.findById(uuid).get();
+
+        return AccountMapper.toDTO(account);
     }
 
-    public AccountModel withdraw(UUID uuid, TransactionModel transactionModel) {
-        AccountModel accountModel = accountService.getAccountByUUID(uuid);
+    public AccountDTO withdraw(UUID uuid, TransactionDTO transactionDTO) {
+        TransactionModel transactionModel = TransactionMapper.toModel(transactionDTO);
 
-        accountService.subtractBalance(accountModel, transactionModel.getAmount());
+        accountService.subtractBalance(uuid, transactionDTO.getAmount());
 
         transactionModel.setSourceAccount(uuid);
         transactionModel.setTransactionType(TransactionType.WITHDRAW);
 
-        accountRepository.save(accountModel);
         transactionRepository.save(transactionModel);
 
-        return accountModel;
+        AccountModel account = accountRepository.findById(uuid).get();
+
+        return AccountMapper.toDTO(account);
     }
 
-    public AccountModel[] transfer(UUID sourceUUID, UUID destinationUUID, TransactionModel transactionModel) {
-        AccountModel sourceAccountModel = accountService.getAccountByUUID(sourceUUID);
-        AccountModel destinationAccountModel = accountService.getAccountByUUID(destinationUUID);
+    public AccountDTO transfer(UUID sourceUUID, TransactionDTO transactionDTO) {
+        TransactionModel transactionModel = TransactionMapper.toModel(transactionDTO);
 
-        accountService.subtractBalance(sourceAccountModel, transactionModel.getAmount());
-        accountService.sumBalance(destinationAccountModel, transactionModel.getAmount());
+        accountService.subtractBalance(sourceUUID, transactionDTO.getAmount());
+        accountService.sumBalance(transactionDTO.getDestinationAccount(), transactionDTO.getAmount());
 
         transactionModel.setSourceAccount(sourceUUID);
-        transactionModel.setDestinationAccount(destinationUUID);
         transactionModel.setTransactionType(TransactionType.TRANSFER);
 
-        accountRepository.save(sourceAccountModel);
-        accountRepository.save(destinationAccountModel);
         transactionRepository.save(transactionModel);
 
-        return new AccountModel[]{sourceAccountModel, destinationAccountModel};
+        AccountModel account = accountRepository.findById(sourceUUID).get();
+
+        return AccountMapper.toDTO(account);
     }
 }

@@ -4,9 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import syncgui.github.bankingapi.model.AccountModel;
+import syncgui.github.bankingapi.DTO.AccountDTO;
 import syncgui.github.bankingapi.service.AccountService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,13 +18,13 @@ public class AccountController {
     AccountService accountService;
 
     @GetMapping
-    public Iterable<AccountModel> findAllClients() {
+    public List<AccountDTO> findAllClients() {
         return accountService.findAllAccounts();
     }
 
     @PostMapping(path = "/add")
-    public @ResponseBody AccountModel addClient(@Valid @RequestBody AccountModel accountModel) {
-        return accountService.saveAccount(accountModel);
+    public @ResponseBody AccountDTO addClient(@Valid @RequestBody AccountDTO accountDTO) {
+        return accountService.saveAccount(accountDTO);
     }
 
     @DeleteMapping(path = "/{uuid}")
