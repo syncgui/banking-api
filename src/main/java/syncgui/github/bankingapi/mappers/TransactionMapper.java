@@ -1,7 +1,7 @@
-package syncgui.github.bankingapi.mapper;
+package syncgui.github.bankingapi.mappers;
 
-import syncgui.github.bankingapi.DTO.TransactionDTO;
-import syncgui.github.bankingapi.model.TransactionModel;
+import syncgui.github.bankingapi.dtos.TransactionDTO;
+import syncgui.github.bankingapi.models.TransactionModel;
 
 public class TransactionMapper {
 

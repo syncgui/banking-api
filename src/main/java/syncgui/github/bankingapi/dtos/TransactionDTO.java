@@ -1,4 +1,4 @@
-package syncgui.github.bankingapi.DTO;
+package syncgui.github.bankingapi.dtos;
 
 import jakarta.validation.constraints.Min;
 import lombok.Builder;

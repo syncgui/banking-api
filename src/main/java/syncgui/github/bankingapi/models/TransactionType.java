@@ -1,4 +1,4 @@
-package syncgui.github.bankingapi.model;
+package syncgui.github.bankingapi.models;
 
 public enum TransactionType {
 

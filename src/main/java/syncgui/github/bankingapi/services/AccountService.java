@@ -1,4 +1,4 @@
-package syncgui.github.bankingapi.service;
+package syncgui.github.bankingapi.services;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import syncgui.github.bankingapi.DTO.AccountDTO;
-import syncgui.github.bankingapi.exception.AccountNotFoundException;
-import syncgui.github.bankingapi.mapper.AccountMapper;
-import syncgui.github.bankingapi.model.AccountModel;
-import syncgui.github.bankingapi.repository.AccountRepository;
+import syncgui.github.bankingapi.dtos.AccountDTO;
+import syncgui.github.bankingapi.exceptions.AccountNotFoundException;
+import syncgui.github.bankingapi.mappers.AccountMapper;
+import syncgui.github.bankingapi.models.AccountModel;
+import syncgui.github.bankingapi.repositories.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static syncgui.github.bankingapi.mapper.AccountMapper.toDTO;
-import static syncgui.github.bankingapi.mapper.AccountMapper.toModel;
+import static syncgui.github.bankingapi.mappers.AccountMapper.toDTO;
+import static syncgui.github.bankingapi.mappers.AccountMapper.toModel;
 
 @Service
 public class AccountService {
@@ -60,13 +60,12 @@ public class AccountService {
         query.setParameter("uuid", uuid);
         int deletedRows = query.executeUpdate();
         System.out.println("Rows deleted: " + deletedRows);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    public boolean accountExists(UUID uuid) {
+    public void accountExists(UUID uuid) {
         if (!(accountRepository.checkIfAccountExists(uuid) > 0)) {
             throw new AccountNotFoundException(uuid);
         }
-        return true;
     }
 }

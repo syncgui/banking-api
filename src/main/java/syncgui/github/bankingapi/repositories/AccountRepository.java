@@ -1,11 +1,11 @@
-package syncgui.github.bankingapi.repository;
+package syncgui.github.bankingapi.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import syncgui.github.bankingapi.model.AccountModel;
+import syncgui.github.bankingapi.models.AccountModel;
 
 import java.util.UUID;
 

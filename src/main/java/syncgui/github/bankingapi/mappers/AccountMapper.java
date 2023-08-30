@@ -1,7 +1,7 @@
-package syncgui.github.bankingapi.mapper;
+package syncgui.github.bankingapi.mappers;
 
-import syncgui.github.bankingapi.DTO.AccountDTO;
-import syncgui.github.bankingapi.model.AccountModel;
+import syncgui.github.bankingapi.dtos.AccountDTO;
+import syncgui.github.bankingapi.models.AccountModel;
 
 public class AccountMapper {
 

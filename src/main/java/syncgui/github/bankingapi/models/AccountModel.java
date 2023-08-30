@@ -1,4 +1,4 @@
-package syncgui.github.bankingapi.model;
+package syncgui.github.bankingapi.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class AccountModel {
+@Data
+public class AccountModel {
 
     @Id
     @GeneratedValue()

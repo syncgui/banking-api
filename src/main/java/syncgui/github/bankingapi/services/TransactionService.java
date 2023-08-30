@@ -1,16 +1,16 @@
-package syncgui.github.bankingapi.service;
+package syncgui.github.bankingapi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import syncgui.github.bankingapi.DTO.AccountDTO;
-import syncgui.github.bankingapi.DTO.TransactionDTO;
-import syncgui.github.bankingapi.mapper.AccountMapper;
-import syncgui.github.bankingapi.mapper.TransactionMapper;
-import syncgui.github.bankingapi.model.AccountModel;
-import syncgui.github.bankingapi.model.TransactionModel;
-import syncgui.github.bankingapi.model.TransactionType;
-import syncgui.github.bankingapi.repository.AccountRepository;
-import syncgui.github.bankingapi.repository.TransactionRepository;
+import syncgui.github.bankingapi.dtos.AccountDTO;
+import syncgui.github.bankingapi.dtos.TransactionDTO;
+import syncgui.github.bankingapi.mappers.AccountMapper;
+import syncgui.github.bankingapi.mappers.TransactionMapper;
+import syncgui.github.bankingapi.models.AccountModel;
+import syncgui.github.bankingapi.models.TransactionModel;
+import syncgui.github.bankingapi.models.TransactionType;
+import syncgui.github.bankingapi.repositories.AccountRepository;
+import syncgui.github.bankingapi.repositories.TransactionRepository;
 
 import java.util.UUID;
 

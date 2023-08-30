@@ -1,4 +1,4 @@
-package syncgui.github.bankingapi.exception;
+package syncgui.github.bankingapi.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

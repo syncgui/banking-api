@@ -1,7 +1,6 @@
-package syncgui.github.bankingapi.model;
+package syncgui.github.bankingapi.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Builder
-public @Data class TransactionModel {
+@Data
+public class TransactionModel {
 
     @Id
     @GeneratedValue()
