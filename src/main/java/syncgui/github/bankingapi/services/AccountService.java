@@ -10,11 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import syncgui.github.bankingapi.dtos.AccountDTO;
 import syncgui.github.bankingapi.exceptions.AccountNotFoundException;
 import syncgui.github.bankingapi.mappers.AccountMapper;
-import syncgui.github.bankingapi.models.AccountModel;
 import syncgui.github.bankingapi.repositories.AccountRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static syncgui.github.bankingapi.mappers.AccountMapper.toDTO;
@@ -28,11 +26,6 @@ public class AccountService {
 
     @PersistenceContext
     EntityManager entityManager;
-
-    public AccountDTO getAccountByUUID(UUID uuid) {
-        Optional<AccountModel> resultAccount = accountRepository.findById(uuid);
-        return toDTO(resultAccount.orElseThrow(() -> new AccountNotFoundException(uuid)));
-    }
 
     public AccountDTO saveAccount(AccountDTO accountDTO) {
         return toDTO(accountRepository.save(toModel(accountDTO)));

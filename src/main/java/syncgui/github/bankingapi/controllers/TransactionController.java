@@ -9,7 +9,6 @@ import syncgui.github.bankingapi.services.TransactionService;
 
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
